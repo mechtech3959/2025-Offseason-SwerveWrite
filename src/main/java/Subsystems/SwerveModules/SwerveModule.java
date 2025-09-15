@@ -26,6 +26,7 @@ public class SwerveModule {
    private VelocityVoltage driveProfile;
    private Rotation2d setAngle;
    private double setSpeed = 0;
+
    public SwerveModule(int driveID, int turnID, int encoderID, String canBus) {
 
       driveMotor = new TalonFX(driveID, canBus);
@@ -44,7 +45,7 @@ public class SwerveModule {
    }
 
    public SwerveModuleState getState() {
-      return state;
+      return new SwerveModuleState(setSpeed, setAngle);
    }
 
    public void setState(SwerveModuleState State) {
@@ -55,4 +56,5 @@ public class SwerveModule {
       driveMotor.setControl(driveProfile.withVelocity(State.speedMetersPerSecond));
       setSpeed = State.speedMetersPerSecond;
    }
+
 }
