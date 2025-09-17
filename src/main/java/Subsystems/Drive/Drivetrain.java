@@ -27,17 +27,20 @@ public class Drivetrain extends SubsystemBase {
         FRpose = new Translation2d(-12.25, 12.25);
         BLpose = new Translation2d(12.25, -12.25);
         BRpose = new Translation2d(-12.25, -12.25);
-        frontLeft = new SwerveModule(1, 2, 3, getName());
-        frontRight = new SwerveModule(4, 5, 6, getName());
-        backLeft = new SwerveModule(7, 8, 9, getName());
-        backRight = new SwerveModule(10, 11, 12, getName());
+        frontLeft = new SwerveModule(7, 8, 12, "rio");
+        frontRight = new SwerveModule(1, 3, 13, "rio");
+        backLeft = new SwerveModule(5, 6, 14, "rio");
+        backRight = new SwerveModule(2, 4, 15, "rio");
+        kinematics = new SwerveDriveKinematics(FLpose,FRpose,BLpose,BRpose);
     }
 // i think this is robot centric......
     public void driveXY(double vel, double theta){
-        for(SwerveModule i : driveArray){
-            i.setState(new SwerveModuleState(vel,new Rotation2d(theta)));
+            driveArray[0].setState(new SwerveModuleState(vel,new Rotation2d(theta)));
+            driveArray[1].setState(new SwerveModuleState(vel,new Rotation2d(theta)));
+            driveArray[2].setState(new SwerveModuleState(vel,new Rotation2d(theta)));
+            driveArray[3].setState(new SwerveModuleState(vel,new Rotation2d(theta)));
+
         }
 
 
     }
-}
