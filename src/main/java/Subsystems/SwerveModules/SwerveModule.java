@@ -1,5 +1,6 @@
 package Subsystems.SwerveModules;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
@@ -30,7 +31,7 @@ public class SwerveModule {
    private final double wheelRad = 2.0;
    private double positionDrive = 0;
 
-   public SwerveModule(int driveID, int turnID, int encoderID, String canBus) {
+   public SwerveModule(int driveID, int turnID, int encoderID, CANBus canBus) {
 
       driveMotor = new TalonFX(driveID, canBus);
       turnMotor = new TalonFX(turnID, canBus);
@@ -43,7 +44,8 @@ public class SwerveModule {
             new MagnetSensorConfigs().withSensorDirection(SensorDirectionValue.CounterClockwise_Positive)));
       turnMotor.getConfigurator()
             .apply(new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(0.5).withKI(0).withKD(0.1))
-                  .withFeedback(new FeedbackConfigs().withFusedCANcoder(turnEncoder)));
+                  .withFeedback(new FeedbackConfigs().withFusedCANcoder(turnEncoder).withRotorToSensorRatio(6.75)
+                        .withSensorToMechanismRatio(1)));
 
    }
 
