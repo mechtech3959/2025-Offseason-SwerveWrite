@@ -14,6 +14,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.AngularVelocity;
 
@@ -24,8 +25,10 @@ public class SwerveModule {
    private SwerveModuleState state;
    private PositionVoltage turnProfile;
    private VelocityVoltage driveProfile;
-   private Rotation2d setAngle;
-   private double setSpeed = 0;
+   private Rotation2d wheelAngle;
+   private double speedDrive = 0;
+   private final double wheelRad = 2.0;
+   private double positionDrive = 0;
 
    public SwerveModule(int driveID, int turnID, int encoderID, String canBus) {
 
@@ -45,16 +48,27 @@ public class SwerveModule {
    }
 
    public SwerveModuleState getState() {
-      return new SwerveModuleState(setSpeed, setAngle);
+      return new SwerveModuleState(speedDrive, wheelAngle);
+   }
+
+   public SwerveModulePosition getPosition() {
+
+      return new SwerveModulePosition(speedDrive, wheelAngle);
    }
 
    public void setState(SwerveModuleState State) {
       State.optimize(State.angle);
       turnMotor
             .setControl(turnProfile.withPosition(State.angle.getRadians()).withEnableFOC(true).withUseTimesync(true));
-      setAngle = State.angle;
+      wheelAngle = State.angle;
       driveMotor.setControl(driveProfile.withVelocity(State.speedMetersPerSecond));
-      setSpeed = State.speedMetersPerSecond;
+      speedDrive = State.speedMetersPerSecond;
    }
 
+   public void updateData() {
+      speedDrive = driveMotor.getVelocity().getValueAsDouble();
+      positionDrive = driveMotor.getPosition().getValueAsDouble();
+      wheelAngle = new Rotation2d(turnEncoder.getAbsolutePosition().getValue());
+
+   }
 }

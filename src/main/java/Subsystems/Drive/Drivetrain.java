@@ -34,11 +34,11 @@ public class Drivetrain extends SubsystemBase {
         kinematics = new SwerveDriveKinematics(FLpose,FRpose,BLpose,BRpose);
     }
 // i think this is robot centric......
-    public void driveXY(double vel, double theta){
-            driveArray[0].setState(new SwerveModuleState(vel,new Rotation2d(theta)));
-            driveArray[1].setState(new SwerveModuleState(vel,new Rotation2d(theta)));
-            driveArray[2].setState(new SwerveModuleState(vel,new Rotation2d(theta)));
-            driveArray[3].setState(new SwerveModuleState(vel,new Rotation2d(theta)));
+    public void driveXY(double vel, Rotation2d theta){
+            driveArray[0].setState(new SwerveModuleState(vel,theta));
+            driveArray[1].setState(new SwerveModuleState(vel,theta));
+            driveArray[2].setState(new SwerveModuleState(vel,theta));
+            driveArray[3].setState(new SwerveModuleState(vel,theta));
 
         }
 
