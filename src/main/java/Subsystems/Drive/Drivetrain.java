@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry3d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -54,12 +55,14 @@ public class Drivetrain extends SubsystemBase {
 
     }
     //TODO: field centric research... 
+    //this def will not work but i am interests in the outcome
     public void driveField(double vel, Rotation2d theta){
-        gyro.getPitch(); 
-        driveArray[0].setState(new SwerveModuleState(vel, theta));
-        driveArray[1].setState(new SwerveModuleState(vel, theta));
-        driveArray[2].setState(new SwerveModuleState(vel, theta));
-        driveArray[3].setState(new SwerveModuleState(vel, theta));
+        gyro.getYaw(); 
+         
+        driveArray[0].setState(new SwerveModuleState(vel, new Rotation2d(Units.degreesToRadians(gyro.getYaw().getValueAsDouble())-theta.getRadians())));
+        driveArray[1].setState(new SwerveModuleState(vel, new Rotation2d(Units.degreesToRadians(gyro.getYaw().getValueAsDouble())-theta.getRadians())));
+        driveArray[2].setState(new SwerveModuleState(vel, new Rotation2d(Units.degreesToRadians(gyro.getYaw().getValueAsDouble())-theta.getRadians())));
+        driveArray[3].setState(new SwerveModuleState(vel, new Rotation2d(Units.degreesToRadians(gyro.getYaw().getValueAsDouble())-theta.getRadians())));
     }
     @Override
     public void periodic() {
